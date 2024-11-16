@@ -11,13 +11,13 @@ import br.com.rafaelmaia.service.ChatGPTService;
 @RestController
 @RequestMapping("/bot")
 public class ChatGPTController {
-	
+
 	@Autowired
 	private ChatGPTService service;
 
 	// HOST/bot/chat
 	@GetMapping("/chat")
-	public Object chat(@RequestParam("prompt") String prompt) {
+	public String chat(@RequestParam("prompt") String prompt) {
 		return service.chat(prompt);
 	}
 }

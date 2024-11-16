@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import br.com.rafaelmaia.vo.request.ChatGptRequest;
 import br.com.rafaelmaia.vo.response.ChatGptResponse;
 
@@ -24,15 +26,19 @@ public class ChatGPTService {
 	@Autowired
 	private RestTemplate template;
 	
-	public Object chat(String prompt) {
+	public String chat(String prompt) {
 		
 		logger.info("Starting Prompt");
 		
 		ChatGptRequest request = new ChatGptRequest(model, prompt);
 		
+		/* chamada para verificar o json que está sendo enviado
+		String json = new ObjectMapper().writeValueAsString(request);
+		logger.info(json); */
+		
 		logger.info("Processing Prompt");
 		ChatGptResponse response = template.postForObject(url, request, ChatGptResponse.class);
 		
-		return response;
+		return response.getChoices().get(0).getMessage().getContent();
 	}
 }
